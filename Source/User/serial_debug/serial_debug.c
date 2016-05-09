@@ -26,8 +26,9 @@
 /* includes-------------------------------------------------------------------*/
 #include <stdarg.h>
 #include <stdio.h>
+#include <string.h>
 #include "main_conf.h"
-#include "serial_debug.h"
+#include "serial_debug\serial_debug.h"
 #include "stm32f10x.h"
 
     
@@ -35,6 +36,7 @@
 #ifdef SERIAL_DEBUG
     #define SERIAL_DEBUG_COM                        USART2
     #define SERIAL_DEBUG_COM_CLK                    RCC_APB1Periph_USART2
+    #define SERIAL_DEBUG_COM_CLK_INIT               RCC_APB1PeriphClockCmd
     #define SERIAL_DEBUG_COM_TX_PIN                 GPIO_Pin_2
     #define SERIAL_DEBUG_COM_TX_GPIO_PORT           GPIOA
     #define SERIAL_DEBUG_COM_TX_GPIO_CLK            RCC_APB2Periph_GPIOA
@@ -62,37 +64,46 @@
 
 
 /* Private variables ---------------------------------------------------------*/
+#ifdef SERIAL_DEBUG
+#define SZ_LogBuFF_MAXSIZE  128
+uint8_t aucLogBuff[SZ_LogBuFF_MAXSIZE+1] = {0};
+#endif
+
+
 /* Private functions ---------------------------------------------------------*/
 /* External functions --------------------------------------------------------*/
 /* External variables --------------------------------------------------------*/
     
 
-void __Prompt__(const char *file, int line, const char *func, const char *format, ...)
+void __Prompt__(const char *file, int line, const char *func, const char *format, va_list argp)
 #ifdef SERIAL_DEBUG
 {
-    va_list args;
-
+    if(NULL == format|| 0 == format[0]) 
+    {
+        return;
+    }
+    memset(aucLogBuff, 0, sizeof(aucLogBuff));
+    vsnprintf((char *)aucLogBuff, SZ_LogBuFF_MAXSIZE, format, argp);
     printf("\n  Prompt : [%s %d]%s():", file, line, func);
-    va_start(args, format);
-    printf(format, args);
-    va_end(args);    
-    printf("\n");
+    printf("%s\n", aucLogBuff);
 }
 #else
 {
 }
 #endif
 
-void __Assert__(const char *file, int line, const char *func, const char *format, ...)
+void __Assert__(const char *file, int line, const char *func, const char *format, va_list argp)
 #ifdef SERIAL_DEBUG
 {
-    va_list args;
-
+    if (NULL == format|| 0 == format[0]) 
+    {
+        return;
+    }
+    memset(aucLogBuff, 0, sizeof(aucLogBuff));
+    vsnprintf((char *)aucLogBuff, SZ_LogBuFF_MAXSIZE, format, argp);
     printf("\n  Assert : [%s %d]%s():", file, line, func);
-    va_start(args, format);
-    printf(format, args);
-    va_end(args);    
-    printf("\n");
+    printf("%s\n", aucLogBuff);
+
 }
 #else
 {
@@ -109,7 +120,7 @@ void DebugComPort_Init(void)
     RCC_APB2PeriphClockCmd(SERIAL_DEBUG_COM_TX_GPIO_CLK | SERIAL_DEBUG_COM_RX_GPIO_CLK | RCC_APB2Periph_AFIO, ENABLE);
 
     /* Enable UART clock */
-    RCC_APB2PeriphClockCmd(SERIAL_DEBUG_COM_CLK, ENABLE);   
+    SERIAL_DEBUG_COM_CLK_INIT(SERIAL_DEBUG_COM_CLK, ENABLE);   
 
     /* Configure USART Tx as alternate function push-pull */
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
@@ -147,6 +158,7 @@ void DebugComPort_Init(void)
 #endif
 
 
+#ifdef SERIAL_DEBUG
 /* Use no semihosting */
 #pragma import(__use_no_semihosting)
 struct __FILE
@@ -160,15 +172,14 @@ _sys_exit(int x)
 	x = x;
 }
 
-#ifdef SERIAL_DEBUG
 PUTCHAR_PROTOTYPE
 {
     /* Place your implementation of fputc here */
     /* e.g. write a character to the USART */
     while(!(SERIAL_DEBUG_COM->SR & USART_SR_TXE));
     USART_SendData(SERIAL_DEBUG_COM, (uint8_t) ch);
-    while(!(SERIAL_DEBUG_COM->SR & USART_SR_TC));     
-    
+    while(!(SERIAL_DEBUG_COM->SR & USART_SR_TC)); 
+
     return ch;
 }
 #endif

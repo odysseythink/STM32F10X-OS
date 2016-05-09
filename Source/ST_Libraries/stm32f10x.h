@@ -517,15 +517,12 @@ typedef __I uint16_t vuc16;  /*!< Read Only */
 typedef __I uint8_t vuc8;   /*!< Read Only */
 
 typedef enum {RESET = 0, SET = !RESET} FlagStatus, ITStatus;
-
+typedef enum {OFF, ON=!OFF}EN_SwitchState_Type;
 typedef enum {DISABLE = 0, ENABLE = !DISABLE} FunctionalState;
 #define IS_FUNCTIONAL_STATE(STATE) (((STATE) == DISABLE) || ((STATE) == ENABLE))
 
 typedef enum {ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
 typedef enum {FALSE = 0, TRUE = !FALSE} BOOL;
-typedef enum {OFF, ON=!OFF}EN_SwitchState_Type;
-typedef enum {LOW, HIGH=!LOW}EN_PIN_STAT_TYPE;
-
 
 /*!< STM32F10x Standard Peripheral Library old definitions (maintained for legacy purpose) */
 #define HSEStartUp_TimeOut   HSE_STARTUP_TIMEOUT

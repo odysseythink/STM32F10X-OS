@@ -32,6 +32,10 @@
 /*                                  @INCLUDES                                 */
 /*============================================================================*/
 #include <stdarg.h>
+#include <stddef.h>
+#include <string.h>
+#include <stdio.h>
+#include <stdint.h>
 #include "main_conf.h"
 
 
@@ -50,8 +54,8 @@
 #ifdef SERIAL_DEBUG
     void DebugComPort_Init(void);
 #endif    
-void __Prompt__(const char *file, int line, const char *func, const char *format, ...);
-void __Assert__(const char *file, int line, const char *func, const char *format, ...);
+void __Prompt__(const char *file, int line, const char *func, const char *format, va_list argp);
+void __Assert__(const char *file, int line, const char *func, const char *format, va_list argp);
 
     
 #ifdef __cplusplus

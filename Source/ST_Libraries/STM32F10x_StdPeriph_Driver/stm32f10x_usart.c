@@ -20,8 +20,8 @@
  */
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm32f10x_usart.h"
-#include "stm32f10x_rcc.h"
+#include "STM32F10x_StdPeriph_Driver\stm32f10x_usart.h"
+#include "STM32F10x_StdPeriph_Driver\stm32f10x_rcc.h"
 
 /** @addtogroup STM32F10x_StdPeriph_Driver
  * @{

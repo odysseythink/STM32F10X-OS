@@ -305,7 +305,7 @@ void SystemInit (void)
  */
 void SystemCoreClockUpdate (void)
 {
-    uint32_t tmp = 0, pllmull = 0, pllsource = 0;
+    uint32_t pllmull = 0, pllsource = 0;
 
 #ifdef  STM32F10X_CL
     uint32_t prediv1source = 0, prediv1factor = 0, prediv2factor = 0, pll2mull = 0;
@@ -316,9 +316,9 @@ void SystemCoreClockUpdate (void)
 #endif /* STM32F10X_LD_VL or STM32F10X_MD_VL or STM32F10X_HD_VL */
 
     /* Get SYSCLK source -------------------------------------------------------*/
-    tmp = RCC->CFGR & RCC_CFGR_SWS;
+    //tmp = RCC->CFGR & RCC_CFGR_SWS;
 
-    switch (tmp)
+    switch (RCC->CFGR & RCC_CFGR_SWS)
     {
     case 0x00:  /* HSI used as system clock */
         SystemCoreClock = HSI_VALUE;
@@ -406,9 +406,9 @@ void SystemCoreClockUpdate (void)
 
     /* Compute HCLK clock frequency ----------------*/
     /* Get HCLK prescaler */
-    tmp = AHBPrescTable[((RCC->CFGR & RCC_CFGR_HPRE) >> 4)];
+    //tmp = AHBPrescTable[((RCC->CFGR & RCC_CFGR_HPRE) >> 4)];
     /* HCLK clock frequency */
-    SystemCoreClock >>= tmp;  
+    SystemCoreClock >>= AHBPrescTable[((RCC->CFGR & RCC_CFGR_HPRE) >> 4)];  
 }
 
 /**
@@ -999,7 +999,7 @@ static void SetSysClockTo72(void)
         StartUpCounter++;  
     } while((HSEStatus == 0) && (StartUpCounter != HSE_STARTUP_TIMEOUT));
 
-    if ((RCC->CR & RCC_CR_HSERDY) != RESET)
+    if ((RCC->CR & RCC_CR_HSERDY) != (int)RESET)
     {
         HSEStatus = (uint32_t)0x01;
     }

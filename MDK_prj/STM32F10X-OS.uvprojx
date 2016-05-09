@@ -471,21 +471,6 @@
               <FileType>1</FileType>
               <FilePath>..\Source\OS\OS.c</FilePath>
             </File>
-            <File>
-              <FileName>OS.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Source\OS\OS.h</FilePath>
-            </File>
-            <File>
-              <FileName>OS_Conf.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Source\OS\OS_Conf.h</FilePath>
-            </File>
-            <File>
-              <FileName>OS_CLASS.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Source\OS\OS_CLASS.h</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>

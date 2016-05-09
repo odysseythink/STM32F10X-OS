@@ -40,24 +40,7 @@
 /* External functions --------------------------------------------------------*/
 /* External variables --------------------------------------------------------*/
     
-/*******************************************************************************
- Prototype    : Main_Prompt
- Description  : main prompt function
- Input        : 
-                
-                
-                
- Output       : 
- Return Value : static
- Calls        : 
- Called By    : 
- 
- History      :
-  1.Date         -- 2016/1/25 19:12:55:792
-    Author       -- ranwei
-    Modification -- Created function
 
-*******************************************************************************/
 static void Main_Prompt(int line, const char *func, const char *format, ...)
 #ifdef __MAIN_PROMPT__
 {
@@ -72,92 +55,37 @@ static void Main_Prompt(int line, const char *func, const char *format, ...)
 }
 #endif
 
-/*******************************************************************************
- Prototype    : Main_Assert
- Description  : main assert function
- Input        : 
-                
-                
-                
- Output       : 
- Return Value : static
- Calls        : 
- Called By    : 
- 
- History      :
-  1.Date         -- 2016/1/25 19:13:10:862
-    Author       -- ranwei
-    Modification -- Created function
 
-*******************************************************************************/
-static void Main_Assert(int line, const char *func, const char *format, ...)
-#ifdef __MAIN_ASSERT__
-{
-    va_list args;
-
-    va_start(args, format);
-    __Assert__(__FILE__, line, func, format, args);
-    va_end(args);    
-}
-#else
-{
-}
-#endif
 
 
 void test1_Init(void)
 {
-    GPIO_InitTypeDef GPIO_InitStructure;
-    
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
-
-    /* Configure PB9 in output pushpull mode */
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-    GPIO_Init(GPIOB, &GPIO_InitStructure);   
-
-    GPIO_SetBits(GPIOB, GPIO_Pin_8);
+    printf("test1_Init\n");
 }
 
 void test2_Init(void)
 {
-    GPIO_InitTypeDef GPIO_InitStructure;
-    
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
-
-    /* Configure PB9 in output pushpull mode */
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-    GPIO_Init(GPIOB, &GPIO_InitStructure);    
-
-    GPIO_SetBits(GPIOB, GPIO_Pin_9);
+    printf("test2_Init\n");
 }
 
 
-void test1_task(void *arg)
+void test1_PerioProc(void *arg)
 {
-    if(GPIO_ReadOutputDataBit(GPIOB, GPIO_Pin_8))
-    {
-        GPIO_ResetBits(GPIOB, GPIO_Pin_8);
-    }
-    else
-    {
-        GPIO_SetBits(GPIOB, GPIO_Pin_8);
-    }
+    printf("task 1 : %s\n", (char *)arg); 
 }
 
-void test2_task(void *arg)
+void test1_LoopProc(void *arg)
 {
-    if(GPIO_ReadOutputDataBit(GPIOB, GPIO_Pin_9))
-    {
-        GPIO_ResetBits(GPIOB, GPIO_Pin_9);
-    }
-    else
-    {
-        GPIO_SetBits(GPIOB, GPIO_Pin_9);
-    }    
+}
+
+
+void test2_PerioProc(void *arg)
+{
+    printf("task 2 : %s\n", (char *)arg); 
+}
+
+void test2_LoopProc(void *arg)
+{
 }
 
 
@@ -211,6 +139,7 @@ int main(void)
 
     for(;;)
     {
+        OS_Loop();
     }
     
 }
