@@ -414,7 +414,7 @@
       </TargetOption>
       <Groups>
         <Group>
-          <GroupName>Startup</GroupName>
+          <GroupName>ST_Libraries\Startup</GroupName>
           <Files>
             <File>
               <FileName>startup_stm32f10x_md.s</FileName>
@@ -424,7 +424,7 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>CMSIS</GroupName>
+          <GroupName>ST_Libraries\CMSIS</GroupName>
           <Files>
             <File>
               <FileName>system_stm32f10x.c</FileName>
@@ -439,7 +439,7 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>STM32F4xx_StdPeriph_Driver</GroupName>
+          <GroupName>ST_Libraries\STM32F4xx_StdPeriph_Driver</GroupName>
           <Files>
             <File>
               <FileName>misc.c</FileName>
@@ -464,6 +464,16 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>ST_Libraries</GroupName>
+          <Files>
+            <File>
+              <FileName>stm32f10x_it.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Source\ST_Libraries\stm32f10x_it.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>OS</GroupName>
           <Files>
             <File>
@@ -480,11 +490,6 @@
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Source\User\main.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f10x_it.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Source\ST_Libraries\stm32f10x_it.c</FilePath>
             </File>
           </Files>
         </Group>
