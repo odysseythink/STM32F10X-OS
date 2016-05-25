@@ -33,7 +33,24 @@
 
     
 /* Private macro&definde------------------------------------------------------*/
-#ifdef SERIAL_DEBUG
+#ifdef SERIAL_DEBUG_USE_USART1
+    #define SERIAL_DEBUG_COM                        USART1
+    #define SERIAL_DEBUG_COM_CLK                    RCC_APB2Periph_USART1
+    #define SERIAL_DEBUG_COM_CLK_INIT               RCC_APB2PeriphClockCmd
+    #define SERIAL_DEBUG_COM_TX_PIN                 GPIO_Pin_6
+    #define SERIAL_DEBUG_COM_TX_GPIO_PORT           GPIOB
+    #define SERIAL_DEBUG_COM_TX_GPIO_CLK            RCC_APB2Periph_GPIOB
+    #define SERIAL_DEBUG_COM_TX_SOURCE              GPIO_PinSource6
+    #define SERIAL_DEBUG_COM_RX_PIN                 GPIO_Pin_7
+    #define SERIAL_DEBUG_COM_RX_GPIO_PORT           GPIOB
+    #define SERIAL_DEBUG_COM_RX_GPIO_CLK            RCC_APB2Periph_GPIOB
+    #define SERIAL_DEBUG_COM_RX_SOURCE              GPIO_PinSource7
+    #define SERIAL_DEBUG_COM_IRQn                   USART1_IRQn
+    #define SERIAL_DEBUG_COM_REMAP                  GPIO_Remap_USART1
+#endif 
+
+
+#ifdef SERIAL_DEBUG_USE_USART2
     #define SERIAL_DEBUG_COM                        USART2
     #define SERIAL_DEBUG_COM_CLK                    RCC_APB1Periph_USART2
     #define SERIAL_DEBUG_COM_CLK_INIT               RCC_APB1PeriphClockCmd
@@ -46,7 +63,7 @@
     #define SERIAL_DEBUG_COM_RX_GPIO_CLK            RCC_APB2Periph_GPIOA
     #define SERIAL_DEBUG_COM_RX_SOURCE              GPIO_PinSource3
     #define SERIAL_DEBUG_COM_IRQn                   USART2_IRQn
-#endif
+#endif    
 
 
 
