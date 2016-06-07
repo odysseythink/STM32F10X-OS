@@ -42,6 +42,15 @@ extern "C"{
 /*============================================================================*/
 /*                              @MACROS & @TYPEDEFS                           */
 /*============================================================================*/
+typedef void (*Init_Func_Type)(void);
+
+#define SECTION(x)                  __attribute__((section(x)))  
+#define UNUSED                      __attribute__((unused))  
+#define USED                        __attribute__((used))  
+#define ALIGN(n)                    __attribute__((aligned(n)))  
+#define UserSys_Init_Register(x)    static const Init_Func_Type __init_func_##x  SECTION("sys_init_func") USED = (x);  
+
+
 #pragma pack(push, 1)
 
 typedef struct{

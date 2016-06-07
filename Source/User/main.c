@@ -21,6 +21,7 @@
 #include <stddef.h>
 #include <string.h>
 #include <stdarg.h>
+#include "main.h"
 #include "main_conf.h"
 #include <stdio.h>
 #include "serial_debug\serial_debug.h"
@@ -69,10 +70,15 @@ void test2_Init(void)
     printf("test2_Init\n");
 }
 
+void test3_Init(void)
+{
+    printf("test3_Init\n");
+}
+
 
 void test1_PerioProc(void *arg)
 {
-    printf("task 1 : %s\n", (char *)arg); 
+    //printf("task 1 : %s\n", (char *)arg); 
 }
 
 void test1_LoopProc(void *arg)
@@ -82,13 +88,30 @@ void test1_LoopProc(void *arg)
 
 void test2_PerioProc(void *arg)
 {
-    printf("task 2 : %s\n", (char *)arg); 
+    //printf("task 2 : %s\n", (char *)arg); 
 }
 
 void test2_LoopProc(void *arg)
 {
 }
 
+
+
+UserSys_Init_Register(test1_Init); 
+
+UserSys_Init_Register(test3_Init);  
+
+static void UserSys_Init(void)  
+{  
+    extern Init_Func_Type sys_init_func$$Base[]; //sys_init0_func 段的起始地址  
+    extern Init_Func_Type sys_init_func$$Limit[];     //sys_init9_func 段的末尾地址  
+    Init_Func_Type *pfunc = sys_init_func$$Base;  
+    while(pfunc < sys_init_func$$Limit)
+    {  
+        (*pfunc)();  
+        pfunc ++;  
+    }  
+}  
 
 
 
@@ -135,7 +158,7 @@ int main(void)
     Main_Prompt(__LINE__, __FUNCTION__, "System start");
 #endif
     
-
+    UserSys_Init();
     OS_Init();     
 
     for(;;)

@@ -34,6 +34,23 @@
     
 /* Private macro&definde------------------------------------------------------*/
 #ifdef SERIAL_DEBUG_USE_USART1
+#if 0
+    #define SERIAL_DEBUG_COM                        USART1
+    #define SERIAL_DEBUG_COM_CLK                    RCC_APB2Periph_USART1
+    #define SERIAL_DEBUG_COM_CLK_INIT               RCC_APB2PeriphClockCmd
+    #define SERIAL_DEBUG_COM_TX_PIN                 GPIO_Pin_9
+    #define SERIAL_DEBUG_COM_TX_GPIO_PORT           GPIOA
+    #define SERIAL_DEBUG_COM_TX_GPIO_CLK            RCC_APB2Periph_GPIOA
+    #define SERIAL_DEBUG_COM_TX_SOURCE              GPIO_PinSource9
+    #define SERIAL_DEBUG_COM_RX_PIN                 GPIO_Pin_10
+    #define SERIAL_DEBUG_COM_RX_GPIO_PORT           GPIOA
+    #define SERIAL_DEBUG_COM_RX_GPIO_CLK            RCC_APB2Periph_GPIOA
+    #define SERIAL_DEBUG_COM_RX_SOURCE              GPIO_PinSource10
+    #define SERIAL_DEBUG_COM_IRQn                   USART1_IRQn
+#endif  
+
+
+#if 1
     #define SERIAL_DEBUG_COM                        USART1
     #define SERIAL_DEBUG_COM_CLK                    RCC_APB2Periph_USART1
     #define SERIAL_DEBUG_COM_CLK_INIT               RCC_APB2PeriphClockCmd
@@ -48,6 +65,7 @@
     #define SERIAL_DEBUG_COM_IRQn                   USART1_IRQn
     #define SERIAL_DEBUG_COM_REMAP                  GPIO_Remap_USART1
 #endif 
+#endif
 
 
 #ifdef SERIAL_DEBUG_USE_USART2
@@ -64,6 +82,8 @@
     #define SERIAL_DEBUG_COM_RX_SOURCE              GPIO_PinSource3
     #define SERIAL_DEBUG_COM_IRQn                   USART2_IRQn
 #endif    
+
+
 
 
 
@@ -135,6 +155,9 @@ void DebugComPort_Init(void)
     USART_InitTypeDef USART_InitStructure;
 
     RCC_APB2PeriphClockCmd(SERIAL_DEBUG_COM_TX_GPIO_CLK | SERIAL_DEBUG_COM_RX_GPIO_CLK | RCC_APB2Periph_AFIO, ENABLE);
+#ifdef SERIAL_DEBUG_COM_REMAP
+    GPIO_PinRemapConfig(SERIAL_DEBUG_COM_REMAP, ENABLE);
+#endif
 
     /* Enable UART clock */
     SERIAL_DEBUG_COM_CLK_INIT(SERIAL_DEBUG_COM_CLK, ENABLE);   
