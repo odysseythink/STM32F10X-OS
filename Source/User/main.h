@@ -42,13 +42,13 @@ extern "C"{
 /*============================================================================*/
 /*                              @MACROS & @TYPEDEFS                           */
 /*============================================================================*/
-typedef void (*Init_Func_Type)(void);
+typedef void (*Init_Func_Type)(void); /** 初始化函数 */
 
-#define SECTION(x)                  __attribute__((section(x)))  
-#define UNUSED                      __attribute__((unused))  
-#define USED                        __attribute__((used))  
+#define SECTION(x)                  __attribute__((section(x)))  /** 定义一个段 */
+#define UNUSED                      __attribute__((unused))  /** 告诉编译器它修饰的变量不使用，让编译器不要报未使用的错误 */
+#define USED                        __attribute__((used))    /** 告诉编译器保持它修饰的静态变量，不管它是否被调用 */
 #define ALIGN(n)                    __attribute__((aligned(n)))  
-#define UserSys_Init_Register(x)    static const Init_Func_Type __init_func_##x  SECTION("sys_init_func") USED = (x);  
+#define UserSys_InitFunc_Register(x)    static const Init_Func_Type __init_func_##x  SECTION("sys_init_func") USED = (x);  
 
 
 #pragma pack(push, 1)

@@ -97,20 +97,24 @@ void test2_LoopProc(void *arg)
 
 
 
-UserSys_Init_Register(test1_Init); 
+UserSys_InitFunc_Register(test1_Init); 
 
-UserSys_Init_Register(test3_Init);  
+UserSys_InitFunc_Register(test3_Init);  
 
 static void UserSys_Init(void)  
 {  
-    extern Init_Func_Type sys_init_func$$Base[]; //sys_init0_func 段的起始地址  
-    extern Init_Func_Type sys_init_func$$Limit[];     //sys_init9_func 段的末尾地址  
+    extern Init_Func_Type sys_init_func$$Base[];  /** sys_init_func 段的起始地址 */
+    extern Init_Func_Type sys_init_func$$Limit[]; /** sys_init_func 段的末尾地址 */ 
     Init_Func_Type *pfunc = sys_init_func$$Base;  
-    while(pfunc < sys_init_func$$Limit)
-    {  
-        (*pfunc)();  
-        pfunc ++;  
-    }  
+
+    if(sys_init_func$$Base != sys_init_func$$Limit)
+    {
+        while(pfunc < sys_init_func$$Limit)
+        {  
+            (*pfunc)();  
+            pfunc ++;  
+        }  
+    }    
 }  
 
 
